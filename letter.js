@@ -22,6 +22,8 @@ var Letter = function(character, guessed) {
     this.guessed = guessed;
 }
 
+
+/*
 Letter.prototype.displayLtr = function() {
     if(this.guessed) {
         return console.log("display returning true: " + this.character) ;
@@ -29,16 +31,14 @@ Letter.prototype.displayLtr = function() {
         return console.log("display returning false: " + '_') ;
     }
 
-};
+}; */
 
 Letter.prototype.toString = function() {
     var blank = '_';
     if (this.guessed) {
-        console.log("ToString method and its character returning true: " + this.character);
         return this.character;
         
     } else {
-        console.log('ToString returning false + character: ' + this.character);
         return blank;
 
     }
@@ -53,10 +53,12 @@ Letter.prototype.updateGuess = function(ltrInput) {
 };
 
 
+/*
 var C = new Letter('c', false);
-C.displayLtr();
+
 console.log(C + ' ');
 C.updateGuess('C');
-console.log(C + ' test of update guess line 60');
+console.log(C + ' test of update guess line 60'); 
+*/
 
 module.exports = Letter;
