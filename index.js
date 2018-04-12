@@ -18,7 +18,6 @@ var alphabet = 'abcdefghijklmnopqrstuvwxyz';
 var guessedLetters = '';
 
 
-
 //game start
 console.log("Welcome to Hangman!");
 
@@ -47,6 +46,7 @@ function playGame(remainingGuesses) {
         }]).then(function (answer) {
             chosenWord.checkAllLtrs(answer.ltrInput.toLowerCase());
             guessedLetters += answer.ltrInput.toLowerCase();
+
             if (!chosenWord.wordString.includes(answer.ltrInput.toLowerCase())) {
                 remainingGuesses--;
                 console.log('INCORRECT!');
@@ -54,13 +54,11 @@ function playGame(remainingGuesses) {
                 playGame(remainingGuesses);
             } else {
                 console.log('CORRECT!');
-                //correctLtrCount++;
-
-                //if (correctLtrCount === chosenWord.wordString.length) {
-                if (chosenWord.wordArray.join()===chosenWord.wordString) {
-                    console.log('You won! The word was ' + chosenWord.wordString);
-                } else {
+    
+                if (!chosenWord.wordArray.join('')===chosenWord.wordString) {
                     playGame(remainingGuesses);
+                } else {
+                    console.log('You won! The word was ' + chosenWord.wordString);
                 }
             }
         });
