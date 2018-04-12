@@ -1,51 +1,74 @@
-/*
-index.js: The file containing the logic for the course of the game, which depends on Word.js and:
-
-Randomly selects a word and uses the Word constructor to store it
-
-Prompts the user for each guess and keeps track of the user's remaining guesses 
-*/
 
 var inquirer = require('inquirer');
 
-var word = require('./word.js');
+var Word = require('./word.js');
 
+//from Merriam-Webster word of the day Mar & Apr 2018
 var wordChoices = ['maladroit', 'rectitude', 'scilicet', 'lexicographer', 'sensibility', 'veld',
     'ineluctable', 'bastion', 'rabble', 'lugubrious', 'laudable', 'invigilate', 'manticore', 'grandiose',
     'farce', 'elucidate'
 ];
-//from Merriam-Webster word of the day Mar & Apr 2018
 
-var alphabet = 'abcdefghijklmnopqrstuvwxyz';
-var alphabetArray = alphabet.split('');
-
-var randomWord = wordChoices[Math.floor(Math.random() * wordChoices.length)].split('');
-console.log(randomWord);
-
-var chosenWord = new Word(randomWord);
-chosenWord.foreach(function (ltr) {
-    chosenWord.addtoWordArray(ltr, false);
-});
-
-//dear god please test that above before you actually write this game function
-
-/*
-function playGame(remainingGuesses) {
-    if (remainingGuesses > 0) {
-//
-        inquirer.prompt([{
-            // put the prompt here
-            //and do validation
-
-        }]).then(function (answer) {
-//i have no idea on this so it's okay if you don't either. lolol
-        })
-    }
+function chooseWord() {
+    return wordChoices[Math.floor(Math.random() * wordChoices.length)];
 };
 
-playGame(15);
+//alphabet and guessedLetters are for validation
+var alphabet = 'abcdefghijklmnopqrstuvwxyz';
+var guessedLetters = '';
+//correctLtrCount provides win condition
+//var correctLtrCount = 0;
 
-//eventually it would be cool to have a prompt confirm to replay 
+
+//game start
+console.log("Welcome to Hangman!");
+
+var chosenWord = new Word(chooseWord());
+
+for (var i = 0; i < chosenWord.wordString.length; i++) {
+    var ltrInString = chosenWord.wordString.charAt(i);
+    chosenWord.addtoWordArray(ltrInString, false);
+};
 
 
-*/
+//console.log(chosenWord.wordArray);
+function playGame(remainingGuesses) {
+
+    if (remainingGuesses > 0) {
+
+        console.log(chosenWord.wordDisplay());
+
+        inquirer.prompt([{
+            name: 'ltrInput',
+            message: 'Guess a letter',
+            validate: function (value) {
+                var value = value.toLowerCase();
+                return alphabet.includes(value.toLowerCase()) && !guessedLetters.includes(value);
+            }
+
+        }]).then(function (answer) {
+            chosenWord.checkAllLtrs(answer.ltrInput.toLowerCase());
+            guessedLetters += answer.ltrInput.toLowerCase();
+            if (!chosenWord.wordString.includes(answer.ltrInput.toLowerCase())) {
+                remainingGuesses--;
+                console.log('INCORRECT!');
+                console.log(remainingGuesses + ' guesses remain');
+                playGame(remainingGuesses);
+            } else {
+                console.log('CORRECT!');
+                //correctLtrCount++;
+
+                //if (correctLtrCount === chosenWord.wordString.length) {
+                if (chosenWord.wordArray.join()===chosenWord.wordString) {
+                    console.log('You won! The word was ' + chosenWord.wordString);
+                } else {
+                    playGame(remainingGuesses);
+                }
+            }
+        });
+
+    } else {
+        return console.log("You lost. The word was " + chosenWord.wordString);
+    }
+};
+playGame(7);
