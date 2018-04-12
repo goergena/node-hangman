@@ -16,8 +16,7 @@ function chooseWord() {
 //alphabet and guessedLetters are for validation
 var alphabet = 'abcdefghijklmnopqrstuvwxyz';
 var guessedLetters = '';
-//correctLtrCount provides win condition
-//var correctLtrCount = 0;
+
 
 
 //game start
@@ -25,13 +24,12 @@ console.log("Welcome to Hangman!");
 
 var chosenWord = new Word(chooseWord());
 
-for (var i = 0; i < chosenWord.wordString.length; i++) {
-    var ltrInString = chosenWord.wordString.charAt(i);
+
+for (var char = 0; char < chosenWord.wordString.length; char++) {
+    var ltrInString = chosenWord.wordString.charAt(char);
     chosenWord.addtoWordArray(ltrInString, false);
 };
 
-
-//console.log(chosenWord.wordArray);
 function playGame(remainingGuesses) {
 
     if (remainingGuesses > 0) {
