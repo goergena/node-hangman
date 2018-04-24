@@ -52,10 +52,10 @@ function playGame(remainingGuesses) {
             } else {
                 console.log('CORRECT!');
     
-                if (!chosenWord.wordArray.join('')===chosenWord.wordString) {
-                    playGame(remainingGuesses);
-                } else {
+                if (chosenWord.wordArray.join('')===chosenWord.wordString) {
                     console.log('You won! The word was ' + chosenWord.wordString);
+                } else {
+                    playGame(remainingGuesses);
                 }
             }
         });
