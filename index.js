@@ -1,74 +1,45 @@
-
 var inquirer = require('inquirer');
 
 var Word = require('./word.js');
 
 //from Merriam-Webster word of the day Mar & Apr 2018
-var wordChoices = ['maladroit', 'rectitude', 'scilicet', 'lexicographer']
-//, 'sensibility', 'veld',
-//    'ineluctable', 'bastion', 'rabble', 'lugubrious', 'laudable', 'invigilate', 'manticore', 'grandiose',
- //   'farce', 'elucidate'
-//];
+var wordChoices = ['maladroit', 'rectitude', 'scilicet', 'lexicographer', 'sensibility', 'veld',
+    'ineluctable', 'bastion', 'rabble', 'lugubrious', 'laudable', 'invigilate', 'manticore', 'grandiose',
+    'farce', 'elucidate'
+];
 
 function chooseWord() {
-   // if (wordChoices.length > 0) {
-        var myWord = wordChoices[Math.floor(Math.random() * wordChoices.length)];
-        removeFromArray(myWord);
-        return myWord;
-   // } else {
-   //     return console.log("You have used all the words! Thanks for playing.");
-   // }
-   
+    var myWord = wordChoices[Math.floor(Math.random() * wordChoices.length)];
+    removeFromArray(myWord);
+    return myWord;
 };
 
 function removeFromArray(wordOption) {
-    //console.log(wordChoices.length)
     var desiredWordIndex = wordChoices.indexOf(wordOption);
-    //console.log(desiredWordIndex);
     if (desiredWordIndex > -1) {
         wordChoices.splice(desiredWordIndex, 1);
     };
-   // console.log(wordChoices.length + " word choice length");
-
-
 };
-//removeFromArray('bastion');
+
 
 //alphabet and guessedLetters are for validation
 var alphabet = 'abcdefghijklmnopqrstuvwxyz';
 var guessedLetters = '';
 
 
-//game start
+var nextWord = new Word(chooseWord());
+nextWord.addtoWordArray();
 
-console.log("Welcome to Hangman!");
-/*
-function playTenGames(gameCount) {
-    if (gameCount > 0) {
-        gameCount--;
+function resetGameParams() {
+    if (wordChoices.length > 0) {
         guessedLetters = '';
-        var nextWord = new Word(chooseWord());
+        nextWord = new Word(chooseWord());
         nextWord.addtoWordArray();
         playGame(7, nextWord);
-        //playTenGames(gameCount);
     } else {
-        return console.log("You have run your course. Thanks for playing.")
+        return console.log("You have used all the words! Thanks for playing.")
     }
-
 };
-*/
-//playTenGames(10);
-
-
-//var chosenWord = new Word(chooseWord());
-
-//chosenWord.addtoWordArray();
-
-var nextWord = new Word(chooseWord());
-
-nextWord.addtoWordArray();
-//removeFromArray(nextWord);
-playGame(7, nextWord);
 
 
 function playGame(remainingGuesses, chosenWord) {
@@ -82,7 +53,7 @@ function playGame(remainingGuesses, chosenWord) {
             message: 'Guess a letter',
             validate: function (value) {
                 var value = value.toLowerCase();
-                return alphabet.includes(value.toLowerCase()) && !guessedLetters.includes(value) && value.length===1;
+                return alphabet.includes(value.toLowerCase()) && !guessedLetters.includes(value) && value.length === 1;
             }
 
         }]).then(function (answer) {
@@ -96,14 +67,10 @@ function playGame(remainingGuesses, chosenWord) {
                 playGame(remainingGuesses, chosenWord);
             } else {
                 console.log('CORRECT!');
-    
-                if (chosenWord.wordArray.join('')===chosenWord.wordString) {
+
+                if (chosenWord.wordArray.join('') === chosenWord.wordString) {
                     console.log('You won! The word was ' + chosenWord.wordString);
-                    //guessedLetters = '';
-                   // nextWord = new Word(chooseWord());
-                   // nextWord.addtoWordArray();
-                   resetGameParams();
-                  //  playGame(7, nextWord);
+                    resetGameParams();
                 } else {
                     playGame(remainingGuesses, chosenWord);
                 }
@@ -112,26 +79,11 @@ function playGame(remainingGuesses, chosenWord) {
 
     } else {
         console.log("You lost. The word was " + chosenWord.wordString);
-        //guessedLetters = '';
-        //nextWord = new Word(chooseWord());
-        //nextWord.addtoWordArray();
         resetGameParams();
-        //playGame(7, nextWord);
     }
 };
-//playGame(7);
 
 
-function resetGameParams() {
-    if (wordChoices.length > 0) {
-        guessedLetters = '';
-        nextWord = new Word(chooseWord());
-        nextWord.addtoWordArray();
-        playGame(7, nextWord);
-    } else {
-        return console.log("You have used all the words! Thanks for playing.")
-    }
- 
-    //removeFromArray(nextWord);
-
-};
+//game start
+console.log("Welcome to Hangman!");
+playGame(7, nextWord);
