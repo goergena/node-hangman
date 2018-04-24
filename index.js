@@ -23,11 +23,8 @@ console.log("Welcome to Hangman!");
 
 var chosenWord = new Word(chooseWord());
 
+chosenWord.addtoWordArray();
 
-for (var char = 0; char < chosenWord.wordString.length; char++) {
-    var ltrInString = chosenWord.wordString.charAt(char);
-    chosenWord.addtoWordArray(ltrInString, false);
-};
 
 function playGame(remainingGuesses) {
 

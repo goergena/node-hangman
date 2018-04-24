@@ -4,8 +4,12 @@ var Letter = require('./letter.js');
 var Word = function (wordString) {
    this.wordString = wordString;
    this.wordArray = [];
-    this.addtoWordArray = function (character, guessed) {
-        this.wordArray.push(new Letter(character, guessed));
+    this.addtoWordArray = function () {
+        for (var wordIndex = 0; wordIndex < this.wordString.length; wordIndex++ )
+        {
+            var character = this.wordString.charAt(wordIndex);
+            this.wordArray.push(new Letter(character, false));
+        };
     };
     this.wordDisplay = function () {
        return this.wordArray.join(' ');
