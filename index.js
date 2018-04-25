@@ -28,13 +28,11 @@ var guessedLetters = '';
 
 
 var nextWord = new Word(chooseWord());
-nextWord.addtoWordArray();
 
 function resetGameParams() {
     if (wordChoices.length > 0) {
         guessedLetters = '';
         nextWord = new Word(chooseWord());
-        nextWord.addtoWordArray();
         playGame(7, nextWord);
     } else {
         return console.log("You have used all the words! Thanks for playing.")
